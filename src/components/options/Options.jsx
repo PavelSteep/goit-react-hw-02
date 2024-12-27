@@ -1,19 +1,15 @@
 import React from 'react';
 import styles from './Options.module.css';
 
-function Options({ feedbacks, setFeedbacks }) {
-  const updateFeedback = (feedbackType) => {
-    setFeedbacks(prevFeedbacks => ({
-      ...prevFeedbacks,
-      [feedbackType]: prevFeedbacks[feedbackType] + 1
-    }));
-  };
-
+function Options({ setGood, setNeutral, setBad, resetFeedback, totalFeedback }) {
   return (
     <div className={styles.options}>
-      <button onClick={() => updateFeedback('good')}>Good</button>
-      <button onClick={() => updateFeedback('neutral')}>Neutral</button>
-      <button onClick={() => updateFeedback('bad')}>Bad</button>
+      <button onClick={() => setGood(prev => prev + 1)}>Good</button>
+      <button onClick={() => setNeutral(prev => prev + 1)}>Neutral</button>
+      <button onClick={() => setBad(prev => prev + 1)}>Bad</button>
+      {totalFeedback > 0 && (
+        <button onClick={resetFeedback}>Reset</button>
+      )}
     </div>
   );
 }
