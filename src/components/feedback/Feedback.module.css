@@ -1,13 +1,25 @@
-.feedback {
-  background-color: #f0f0f0;
-  padding: 20px;
-  border-radius: 10px;
+.feedback-container {
+  margin-top: 20px;
 }
 
-.feedback h2 {
-  color: #4CAF50;
+p {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #16a085;
 }
 
-.feedback p {
-  font-size: 16px;
+p.bad {
+  color: #e74c3c;
+}
+
+p.total {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.container {
+  margin-top: 20px;
+}
+
+.feedbackText {
+  font-size: 18px;
 }

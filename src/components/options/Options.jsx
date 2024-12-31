@@ -1,15 +1,18 @@
-import React from 'react';
+import React from "react";
 import styles from './Options.module.css';
 
-function Options({ setGood, setNeutral, setBad, resetFeedback, totalFeedback }) {
+function Options({ items, handleFeedback }) {
   return (
-    <div className={styles.options}>
-      <button onClick={() => setGood(prev => prev + 1)}>Good</button>
-      <button onClick={() => setNeutral(prev => prev + 1)}>Neutral</button>
-      <button onClick={() => setBad(prev => prev + 1)}>Bad</button>
-      {totalFeedback > 0 && (
-        <button onClick={resetFeedback}>Reset</button>
-      )}
+    <div className={styles.container}>
+      {items.map((item) => (
+        <button
+          key={item.id}
+          className={styles.button}
+          onClick={() => handleFeedback(item.type)}
+        >
+          {item.label}
+        </button>
+      ))}
     </div>
   );
 }

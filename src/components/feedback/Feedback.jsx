@@ -1,20 +1,18 @@
 import React from 'react';
-import styles from './Feedback.module.css';
 
-function Feedback({ good, neutral, bad, totalFeedback }) {
-  const positivePercentage = totalFeedback > 0 ? Math.round((good / totalFeedback) * 100) : 0;
+function Feedback({ good, neutral, bad, totalFeedback, positivePercentage }) {
+  if (totalFeedback === 0) {
+    return <p>No feedback yet</p>; // Показываем текст, если отзывов пока нет
+  }
 
-  return totalFeedback > 0 ? (
-    <div className={styles.feedback}>
-      <h2>Feedback Statistics:</h2>
+  return (
+    <div>
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
-      <p>Total feedbacks: {totalFeedback}</p>
-      <p>Positive feedback: {positivePercentage}%</p>
+      <p>Total: {totalFeedback}</p>
+      <p>Positive: {positivePercentage}%</p>
     </div>
-  ) : (
-    <p>No feedback collected yet.</p>
   );
 }
 

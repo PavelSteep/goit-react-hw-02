@@ -1,35 +1,59 @@
 import React, { useState } from 'react';
-import Feedback from './feedback/Feedback';
+import Description from './description/Description';
 import Options from './options/Options';
+import Feedback from './feedback/Feedback';
+import data from '../data.json';
+import items from '../items.json';
 
 function App() {
-  // Состояния для каждого типа отзыва
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
+  const [feedback, setFeedback] = useState({
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  });
 
-  // Общая сумма отзывов
-  const totalFeedback = good + neutral + bad;
+  const [positivePercentage, setPositivePercentage] = useState(0);
 
-  // Функция для сброса всех состояний
-  const resetFeedback = () => {
-    setGood(0);
-    setNeutral(0);
-    setBad(0);
+  // Функция для обновления данных
+  const handleFeedback = (type) => {
+    setFeedback((prev) => {
+      const newFeedback = { ...prev, [type]: prev[type] + 1 };
+
+      // Если нажата кнопка "bad", пересчитываем процент
+      if (type === 'bad') {
+        const totalFeedback = newFeedback.good + newFeedback.neutral + newFeedback.bad;
+        const positivePercentage = totalFeedback > 0 ? Math.floor((newFeedback.good / totalFeedback) * 100) : 0;
+        setPositivePercentage(positivePercentage);
+      }
+
+      return newFeedback;
+    });
   };
+
+  // Функция для сброса всех данных
+  const resetFeedback = () => {
+    setFeedback({
+      good: 0,
+      neutral: 0,
+      bad: 0,
+    });
+    setPositivePercentage(0); // Сбрасываем процент
+  };
+
+  const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
 
   return (
     <div>
-      <h1>Sip Happens Café</h1>
-      <p>Please leave your feedback about our service by selecting one of the options below.</p>
-      <Options 
-        setGood={setGood} 
-        setNeutral={setNeutral} 
-        setBad={setBad} 
-        resetFeedback={resetFeedback} 
+      <Description header={data.descriptionData} />
+      <Options items={items} handleFeedback={handleFeedback} />
+      <Feedback 
+        good={feedback.good} 
+        neutral={feedback.neutral} 
+        bad={feedback.bad} 
         totalFeedback={totalFeedback} 
+        positivePercentage={positivePercentage} 
       />
-      <Feedback good={good} neutral={neutral} bad={bad} totalFeedback={totalFeedback} />
+      {totalFeedback > 0 && <button onClick={resetFeedback}>Reset</button>} {/* Показываем кнопку Reset только если есть отзывы */}
     </div>
   );
 }
