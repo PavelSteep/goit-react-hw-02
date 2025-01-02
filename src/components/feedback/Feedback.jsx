@@ -1,8 +1,9 @@
 import React from 'react';
+import Notification from '../notification/Notification';
 
 function Feedback({ good, neutral, bad, totalFeedback, positivePercentage }) {
   if (totalFeedback === 0) {
-    return <p>No feedback yet</p>; // Показываем текст, если отзывов пока нет
+    return <Notification />;
   }
 
   return (
