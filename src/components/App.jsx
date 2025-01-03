@@ -12,39 +12,27 @@ function App() {
     return savedFeedback ? JSON.parse(savedFeedback) : { good: 0, neutral: 0, bad: 0 };
   });
 
-  const [positivePercentage, setPositivePercentage] = useState(() => {
-    const savedPositivePercentage = localStorage.getItem('positivePercentage');
-    return savedPositivePercentage ? JSON.parse(savedPositivePercentage) : 0;
-  });
-
-  // Используем useEffect для синхронизации состояния с localStorage
+  // Синхронизация состояния feedback с localStorage
   useEffect(() => {
     localStorage.setItem('feedback', JSON.stringify(feedback));
-    localStorage.setItem('positivePercentage', positivePercentage);
-  }, [feedback, positivePercentage]);
+  }, [feedback]);
 
   // Функция для обновления данных
   const handleFeedback = (type) => {
-    setFeedback((prev) => {
-      const newFeedback = { ...prev, [type]: prev[type] + 1 };
-
-      // Пересчитываем процент положительных отзывов
-      const totalFeedback = newFeedback.good + newFeedback.neutral + newFeedback.bad;
-      const positivePercentage =
-        totalFeedback > 0 ? Math.floor((newFeedback.good / totalFeedback) * 100) : 0;
-
-      setPositivePercentage(positivePercentage);
-      return newFeedback;
-    });
+    setFeedback((prev) => ({ ...prev, [type]: prev[type] + 1 }));
   };
 
   // Функция для сброса всех данных
   const resetFeedback = () => {
     setFeedback({ good: 0, neutral: 0, bad: 0 });
-    setPositivePercentage(0);
   };
 
   const totalFeedback = feedback.good + feedback.neutral + feedback.bad;
+
+  // Расчет процента положительных отзывов
+  const positivePercentage = totalFeedback > 0 
+    ? Math.floor((feedback.good / totalFeedback) * 100) 
+    : 0;
 
   return (
     <div>
@@ -66,7 +54,7 @@ function App() {
           positivePercentage={positivePercentage}
         />
       ) : (
-        <Notification />  // Показываем компонент Notification, если нет отзывов
+        <Notification /> // Показываем компонент Notification, если нет отзывов
       )}
     </div>
   );
